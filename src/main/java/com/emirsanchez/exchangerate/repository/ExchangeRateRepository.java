@@ -16,7 +16,7 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Inte
     Optional<ExchangeRate> findTopByBaseCurrencyAndFinalCurrency(String baseCurrency, String finalCurrency);
     @Modifying
     @Query("UPDATE ExchangeRate ee SET ee.exchangeType = ?1 WHERE ee.baseCurrency = ?2 AND ee.finalCurrency = ?3")
-    Integer setExchangeTypeByBaseCurrencyAndFinalCurrency(Double exchangeType, String baseCurrency, String finalCurrency);
+    Integer setExchangeTypeByByBaseCurrencyAndFinalCurrency(Double exchangeType, String baseCurrency, String finalCurrency);
 
     @Modifying
     @Query("UPDATE ExchangeRate ee SET ee.exchangeType = ?1 where ee.id = ?2")

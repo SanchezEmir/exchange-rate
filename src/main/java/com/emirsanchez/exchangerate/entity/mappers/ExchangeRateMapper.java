@@ -14,4 +14,6 @@ public interface ExchangeRateMapper {
     ExchangeRateMapper INSTANCE = Mappers.getMapper(ExchangeRateMapper.class);
 
     ExchangeRateDTO.Exchange toDto(ExchangeRate exchangeEntity);
+
+    ExchangeRate toEntity(ExchangeRateDTO.Exchange exchangeRateDTO);
 }

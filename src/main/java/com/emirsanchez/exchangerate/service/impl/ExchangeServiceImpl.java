@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author: E. Sanchez R.
@@ -25,6 +26,13 @@ public class ExchangeServiceImpl implements ExchangeRateService {
     @Autowired
     private ExchangeRateRepository exchangeRepository;
 
+
+    @Override
+    public ExchangeRateDTO.Exchange updateExchange(ExchangeRateDTO.Exchange exchangeRateDTO) {
+        ExchangeRate exchangeRate = ExchangeRateMapper.INSTANCE.toEntity(exchangeRateDTO);
+        exchangeRate = exchangeRepository.save(exchangeRate);
+        return ExchangeRateMapper.INSTANCE.toDto(exchangeRate);
+    }
 
     @Override
     public ExchangeRateDTO.Response getExchange(ExchangeRateDTO.Request request) {
@@ -47,14 +55,19 @@ public class ExchangeServiceImpl implements ExchangeRateService {
 
     @Override
     public List<ExchangeRateDTO.Exchange> findAll() {
-        List <ExchangeRate> entityList = exchangeRepository.findAll();
-        List <ExchangeRateDTO.Exchange> exchangeList = new ArrayList<>();
-
-        for (ExchangeRate exchangeEntity: entityList){
-            exchangeList.add(ExchangeRateMapper.INSTANCE.toDto(exchangeEntity));
-        }
-
-        return exchangeList;
+//        List <ExchangeRate> entityList = exchangeRepository.findAll();
+//        List <ExchangeRateDTO.Exchange> exchangeList = new ArrayList<>();
+//
+//        for (ExchangeRate exchangeEntity: entityList){
+//            exchangeList.add(ExchangeRateMapper.INSTANCE.toDto(exchangeEntity));
+//        }
+//
+//        return exchangeList;
+        List<ExchangeRate> exchangeRates = exchangeRepository.findAll();
+        // Convertir las entidades a DTOs usando MapStruct u otra herramienta de mapeo
+        return exchangeRates.stream()
+                .map(ExchangeRateMapper.INSTANCE::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -68,7 +81,7 @@ public class ExchangeServiceImpl implements ExchangeRateService {
 
     @Override
     public ExchangeRateDTO.Exchange updateExchangeRate(ExchangeRateDTO.Exchange exchange) {
-        Integer result = exchangeRepository.setExchangeTypeByBaseCurrencyAndFinalCurrency(exchange.getExchangeType(),
+        Integer result = exchangeRepository.setExchangeTypeByByBaseCurrencyAndFinalCurrency(exchange.getExchangeType(),
                 exchange.getBaseCurrency(),
                 exchange.getFinalCurrency());
         Optional<ExchangeRate> exchangeEntity = exchangeRepository.findTopByBaseCurrencyAndFinalCurrency(exchange.getBaseCurrency(), exchange.getFinalCurrency());

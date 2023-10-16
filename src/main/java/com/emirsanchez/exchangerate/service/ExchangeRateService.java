@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface ExchangeRateService {
 
+    ExchangeRateDTO.Exchange updateExchange(ExchangeRateDTO.Exchange exchangeRateDTO);
+
     ExchangeRateDTO.Response getExchange(ExchangeRateDTO.Request request);
     List<ExchangeRateDTO.Exchange> findAll();
     ExchangeRateDTO.Exchange updateById(Double exchangeType, Integer id);
